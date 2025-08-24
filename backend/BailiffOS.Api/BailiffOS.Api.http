@@ -1,0 +1,6 @@
+@BailiffOS.Api_HostAddress = http://localhost:5202
+
+GET {{BailiffOS.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
