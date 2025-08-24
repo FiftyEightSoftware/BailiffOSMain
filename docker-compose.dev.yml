@@ -1,0 +1,11 @@
+version: "3.9"
+services:
+  api:
+    # Enable with: docker compose -f docker-compose.yml -f docker-compose.dev.yml --profile dev up -d
+    profiles: ["dev"]
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
+    ports:
+      - "8080:8080"
+    restart: unless-stopped

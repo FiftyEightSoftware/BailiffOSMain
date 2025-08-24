@@ -1,0 +1,18 @@
+version: "3.9"
+services:
+  api:
+    # Enable with: docker compose -f docker-compose.yml -f docker-compose.test.yml --profile test up -d
+    profiles: ["test"]
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Testing
+      - ASPNETCORE_URLS=http://+:8080
+    # Use a different published port in test to avoid colliding with dev
+    ports:
+      - "8081:8080"
+    restart: unless-stopped
+    # Optional healthcheck to know when the API is ready in test runs
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8080/todos || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
