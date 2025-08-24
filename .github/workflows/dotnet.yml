@@ -33,21 +33,27 @@ jobs:
       - name: Build
         run: dotnet build BailiffOS.sln --configuration Release --no-restore
 
-      - name: Test
-        run: dotnet test BailiffOS.sln --configuration Release --no-build --verbosity normal --collect:"XPlat Code Coverage"
+      - name: Test with coverage and threshold
+        run: >
+          dotnet test BailiffOS.sln --configuration Release --no-build --verbosity normal
+          /p:CollectCoverage=true
+          /p:CoverletOutputFormat=cobertura
+          /p:CoverletOutput=./TestResults/Coverage/coverage
+          /p:Threshold=90
+          /p:ThresholdType=line
 
       - name: Upload coverage artifact
         uses: actions/upload-artifact@v4
         with:
           name: coverage-cobertura
           path: |
-            **/TestResults/**/coverage.cobertura.xml
+            **/TestResults/Coverage/coverage.cobertura.xml
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: |
-            **/TestResults/**/coverage.cobertura.xml
+            **/TestResults/Coverage/coverage.cobertura.xml
           flags: unittests
           fail_ci_if_error: false
