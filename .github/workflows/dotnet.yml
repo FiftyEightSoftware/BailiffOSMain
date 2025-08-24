@@ -54,6 +54,14 @@ jobs:
           path: |
             **/TestResults/Coverage/coverage.cobertura.xml
 
+      - name: Upload TRX test results artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-trx
+          path: |
+            **/TestResults/*.trx
+
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
         with:
